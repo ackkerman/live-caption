@@ -5,6 +5,12 @@ PCで再生されるすべての音声をリアルタイム認識して、
 
 Androidの「Live Caption」機能にインスパイアされて作られました。
 
+
+
+https://github.com/user-attachments/assets/5fbaa334-c55b-49f7-b66b-9903ab4a828f
+
+
+
 ## ✨ 主な機能
 
 - OS全体の音声（動画・音楽・通話など）をキャプチャ
@@ -13,7 +19,6 @@ Androidの「Live Caption」機能にインスパイアされて作られまし�
 - キャプション表示ウィンドウは最前面固定・自由配置可能
 - Ctrl+Cを二度押すことで安全に終了可能
 
----
 
 ## 🖥 動作環境
 
@@ -21,7 +26,6 @@ Androidの「Live Caption」機能にインスパイアされて作られまし�
 - Python 3.10 以上推奨
 - モニターソース（例：`alsa_output.pci-0000_00_1f.3.analog-stereo.monitor`）が利用可能なこと
 
----
 
 ## 🛠 インストール手順
 
