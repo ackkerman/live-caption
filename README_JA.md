@@ -1,11 +1,11 @@
 # Live Caption App for Linux
 
+[English](./REAME.md) / [日本語](./README_JA.md)
+
 PCで再生されるすべての音声をリアルタイム認識して、  
 画面に字幕（キャプション）を表示するアプリです。
 
 Androidの「Live Caption」機能にインスパイアされて作られました。
-
-
 
 https://github.com/user-attachments/assets/5fbaa334-c55b-49f7-b66b-9903ab4a828f
 
@@ -64,6 +64,7 @@ poetry run python main.py
 
 ## ⚙️ 今後の拡張予定
 
+- [ ] **デバイスマイクのオン・オフ**
 - [ ] **キャプションのスタイル変更対応**  
 - [ ] **キャプションの折り返し・複数行表示**  
 - [ ] **Whisper.cppなど他の音声認識エンジンへの切り替え**  
