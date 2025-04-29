@@ -1,6 +1,6 @@
 # Live Caption App for Linux
 
-[English](./REAME.md) / [日本語](./README_JA.md)
+[English](./README.md) / [日本語](./README_JA.md)
 
 PCで再生されるすべての音声をリアルタイム認識して、  
 画面に字幕（キャプション）を表示するアプリです。

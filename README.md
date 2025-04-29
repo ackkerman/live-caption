@@ -1,6 +1,6 @@
 # Live Caption App for Linux
 
-[English](./REAME.md) / [日本語](./README_JA.md)
+[English](./README.md) / [日本語](./README_JA.md)
 
 This application recognizes all audio played on your PC in real time  
 and displays subtitles (captions) on the screen.
@@ -63,6 +63,7 @@ poetry run python main.py
 
 ## ⚙️ Planned Future Enhancements
 
+- [ ] **Toggle device microphone**
 - [ ] **Customizable caption styles** (font, color, size, transparency, etc.)
 - [ ] **Text wrapping and multi-line caption support**
 - [ ] **Switchable speech recognition engines (e.g., Whisper.cpp support)**
