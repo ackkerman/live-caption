@@ -60,6 +60,14 @@ poetry run python main.py
 - Press **Ctrl+C twice** to safely terminate the application.
 - Resources will be properly released without freezing.
 
+## 🧪 Running Tests
+
+```bash
+poetry run python -m unittest discover -v
+```
+
+The tests use simple mocks and do not require audio devices or Vosk models.
+
 
 ## ⚙️ Planned Future Enhancements
 
