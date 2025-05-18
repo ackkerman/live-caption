@@ -6,13 +6,16 @@ authors = [
     {name = "moxak",email = "moxak.b@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.10"
 dependencies = [
     "pyqt5 (>=5.15.11,<6.0.0)",
     "vosk (>=0.3.45,<0.4.0)",
     "sounddevice (>=0.5.1,<0.6.0)",
     "numpy (>=2.2.5,<3.0.0)"
 ]
+
+[project.scripts]
+live-caption = "main:main"
 
 
 [build-system]

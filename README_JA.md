@@ -43,13 +43,20 @@ https://github.com/user-attachments/assets/5fbaa334-c55b-49f7-b66b-9903ab4a828f
     poetry run python scripts/monitor_device.py
     ```
 
-5. `main.py` 内の `MONITOR_DEVICE_INDEX` を正しい番号に設定
+5. `main.py` 内の `MONITOR_DEVICE_INDEX` を正しい番号に設定するか、
+   起動時に `--device` オプションで指定してください
 
 
 ## 🚀 起動方法
 
 ```bash
-poetry run python main.py
+poetry run live-caption
+```
+
+主なオプション:
+
+```bash
+poetry run live-caption --device 2 --sample-rate 44100 --chunk-size 2048
 ```
 
 - キャプションウィンドウが最前面に表示されます
