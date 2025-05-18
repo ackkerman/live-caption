@@ -42,13 +42,20 @@ https://github.com/user-attachments/assets/5fbaa334-c55b-49f7-b66b-9903ab4a828f
     poetry run python scripts/monitor_device.py
     ```
 
-4. Set the correct `MONITOR_DEVICE_INDEX` in `main.py`.
+4. Set the correct `MONITOR_DEVICE_INDEX` in `main.py`, or specify it when
+   launching via `--device`.
 
 
 ## 🚀 How to Run
 
 ```bash
-poetry run python main.py
+poetry run live-caption
+```
+
+Common options:
+
+```bash
+poetry run live-caption --device 2 --sample-rate 44100 --chunk-size 2048
 ```
 
 - A caption window will appear pinned to the top of your screen.

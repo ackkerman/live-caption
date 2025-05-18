@@ -1,0 +1,12 @@
+import unittest
+from unittest.mock import patch
+import main
+
+class CLITest(unittest.TestCase):
+    def test_cli_arguments(self):
+        with patch('main.run_app') as run:
+            main.main(['--device','2','--sample-rate','22050','--chunk-size','1024'])
+            run.assert_called_once_with(2, 22050, 1024)
+
+if __name__ == '__main__':
+    unittest.main()

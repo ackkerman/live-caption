@@ -1,9 +1,16 @@
-from CaptionWindow import CaptionWindow
-from PyQt5 import QtWidgets, QtCore
 import sys
+import signal
 import queue
 import threading
-import signal
+import argparse
+
+try:
+    from PyQt5 import QtWidgets, QtCore
+    from CaptionWindow import CaptionWindow
+except Exception:  # pragma: no cover - optional for tests
+    QtWidgets = None
+    QtCore = None
+    CaptionWindow = None
 
 from audio import audio_capture_worker
 from recognizer import recognize_worker
@@ -38,29 +45,44 @@ def periodic_check():
         print("[INFO] 停止イベント検知、アプリケーション終了")
         QtWidgets.QApplication.quit()
 
-if __name__ == "__main__":
+
+def run_app(device_index=MONITOR_DEVICE_INDEX, sample_rate=SAMPLE_RATE, chunk_size=CHUNK_SIZE):
+    """Start the caption application."""
+    if QtWidgets is None or QtCore is None or CaptionWindow is None:
+        raise ImportError("PyQt5 is required to run the application")
     signal.signal(signal.SIGINT, handle_sigint)
 
     app = QtWidgets.QApplication(sys.argv)
     window = CaptionWindow()
 
-    # 音声キャプチャ用スレッド
     threading.Thread(
         target=audio_capture_worker,
-        args=(audio_queue, stop_event, MONITOR_DEVICE_INDEX, SAMPLE_RATE, CHUNK_SIZE),
+        args=(audio_queue, stop_event, device_index, sample_rate, chunk_size),
         daemon=True,
     ).start()
 
-    # 音声認識用スレッド
     threading.Thread(
         target=recognize_worker,
         args=(window, audio_queue, stop_event),
-        kwargs={"sample_rate": SAMPLE_RATE},
+        kwargs={"sample_rate": sample_rate},
         daemon=True,
     ).start()
 
     timer = QtCore.QTimer()
     timer.timeout.connect(periodic_check)
-    timer.start(100)  # 毎100ミリ秒
+    timer.start(100)
 
     sys.exit(app.exec_())
+
+
+def main(argv=None):
+    """CLI entry point"""
+    parser = argparse.ArgumentParser(description="Live Caption app")
+    parser.add_argument("--device", type=int, default=MONITOR_DEVICE_INDEX, help="Monitor device index")
+    parser.add_argument("--sample-rate", type=int, default=SAMPLE_RATE, help="Audio sample rate")
+    parser.add_argument("--chunk-size", type=int, default=CHUNK_SIZE, help="Capture chunk size")
+    args = parser.parse_args(argv)
+    run_app(args.device, args.sample_rate, args.chunk_size)
+
+if __name__ == "__main__":
+    main()
