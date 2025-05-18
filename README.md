@@ -73,12 +73,12 @@ The tests use simple mocks and do not require audio devices or Vosk models.
 
 - [ ] **Toggle device microphone**
 - [ ] **Customizable caption styles** (font, color, size, transparency, etc.)
-- [ ] **Text wrapping and multi-line caption support**
+- [x] **Text wrapping and multi-line caption support**
 - [ ] **Switchable speech recognition engines (e.g., Whisper.cpp support)**
 - [ ] **Multilingual captions (automatic language switching and translation)**
 - [ ] **GUI tool for adjusting caption window position and size**
 - [ ] **Click-through (mouse pass-through) mode for the caption window**
-- [ ] **Fade-out and auto-hide options when audio is not detected**
+- [x] **Fade-out and auto-hide options when audio is not detected**
 
 
 ## 🛡 Notes
