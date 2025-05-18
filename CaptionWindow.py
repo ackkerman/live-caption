@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets, QtCore
 import sys
+import textwrap
 
 class CaptionWindow(QtWidgets.QLabel):
     def __init__(self):
@@ -20,7 +21,18 @@ class CaptionWindow(QtWidgets.QLabel):
             }          
         """)
         self.setText("")
+        screen = QtWidgets.QApplication.primaryScreen().availableGeometry()
+        # 最大幅は画面幅からマージンを差し引いた値に設定
+        self.max_width = screen.width() - 100
+        self.setWordWrap(True)
+        self.setMaximumWidth(self.max_width)
         self.adjustSize()
+
+        # 10秒無音で自動非表示にするタイマー
+        self.hide_timer = QtCore.QTimer(self)
+        self.hide_timer.setSingleShot(True)
+        self.hide_timer.setInterval(10000)
+        self.hide_timer.timeout.connect(self.clear_caption)
 
         # 状態管理
         self.transparency = False
@@ -30,7 +42,13 @@ class CaptionWindow(QtWidgets.QLabel):
         self.drag_position = None
 
         self.update_position()
-        self.show()
+        self.hide()
+
+    def clear_caption(self):
+        """字幕を消してウィンドウを隠す"""
+        self.setText("")
+        self.adjustSize()
+        self.hide()
 
     def update_position(self):
         """レイアウトモードに応じて位置を調整"""
@@ -81,9 +99,25 @@ class CaptionWindow(QtWidgets.QLabel):
 
     def update_caption(self, text: str):
         """キャプションをリアルタイム更新"""
-        self.setText(text)
+        # 画面サイズに応じて最大幅を更新し、テキストを折り返して表示
+        screen = QtWidgets.QApplication.primaryScreen().availableGeometry()
+        self.max_width = screen.width() - 100
+        self.setMaximumWidth(self.max_width)
+
+        metrics = self.fontMetrics()
+        char_width = metrics.averageCharWidth()
+        line_chars = max(1, self.max_width // char_width)
+        wrapped_lines = textwrap.wrap(text, width=line_chars)
+        display_lines = wrapped_lines[-2:]
+        display_text = "\n".join(display_lines)
+
+        self.setText(display_text)
         self.adjustSize()
         self.update_position()
+        self.show()
+
+        # 無音カウントダウンをリセット
+        self.hide_timer.start()
 
 if __name__ == "__main__":
     # 単体テスト
