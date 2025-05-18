@@ -1,12 +1,12 @@
 from CaptionWindow import CaptionWindow
 from PyQt5 import QtWidgets, QtCore
 import sys
-import sounddevice as sd
 import queue
 import threading
 import signal
-from vosk import Model, KaldiRecognizer
-import json
+
+from audio import audio_capture_worker
+from recognizer import recognize_worker
 
 # --- 音声キャプチャ設定 ---
 SAMPLE_RATE = 48000
@@ -19,53 +19,6 @@ audio_queue = queue.Queue()
 # --- 停止フラグとCtrl+Cカウント ---
 stop_event = threading.Event()
 ctrl_c_count = 0
-
-def audio_capture_worker():
-    """sounddeviceでモニター音声をキャプチャ"""
-    def callback(indata, frames, time, status):
-        if status:
-            print(f"Audio Callback Status: {status}", file=sys.stderr)
-        audio_queue.put(indata.copy())
-
-    stream = sd.InputStream(
-        device=MONITOR_DEVICE_INDEX,
-        samplerate=SAMPLE_RATE,
-        channels=1,
-        dtype='int16',
-        blocksize=CHUNK_SIZE,
-        callback=callback,
-    )
-
-    with stream:
-        threading.Event().wait()
-
-def recognize_worker(window: CaptionWindow):
-    """Voskで音声認識してキャプション更新（Partial対応版）"""
-    model = Model(lang="en-us")  # or "ja" model for Japanese
-    rec = KaldiRecognizer(model, SAMPLE_RATE)
-
-    final_text = ""
-
-    while not stop_event.is_set():
-        try:
-            indata = audio_queue.get(timeout=0.1)  # timeout付きにして停止チェック
-        except queue.Empty:
-            continue
-        bytes_data = indata.tobytes()
-
-        if rec.AcceptWaveform(bytes_data):
-            result = rec.Result()
-            text = json.loads(result).get("text", "")
-            if text:
-                print(f"[FINAL] {text}")
-                final_text = text
-                window.update_caption(final_text)
-        else:
-            partial_result = rec.PartialResult()
-            partial_text = json.loads(partial_result).get("partial", "")
-            if partial_text:
-                print(f"[PARTIAL] {partial_text}")
-                window.update_caption(f"{final_text} {partial_text}")
 
 
 def handle_sigint(signum, frame):
@@ -92,10 +45,19 @@ if __name__ == "__main__":
     window = CaptionWindow()
 
     # 音声キャプチャ用スレッド
-    threading.Thread(target=audio_capture_worker, daemon=True).start()
+    threading.Thread(
+        target=audio_capture_worker,
+        args=(audio_queue, stop_event, MONITOR_DEVICE_INDEX, SAMPLE_RATE, CHUNK_SIZE),
+        daemon=True,
+    ).start()
 
     # 音声認識用スレッド
-    threading.Thread(target=recognize_worker, args=(window,), daemon=True).start()
+    threading.Thread(
+        target=recognize_worker,
+        args=(window, audio_queue, stop_event),
+        kwargs={"sample_rate": SAMPLE_RATE},
+        daemon=True,
+    ).start()
 
     timer = QtCore.QTimer()
     timer.timeout.connect(periodic_check)
