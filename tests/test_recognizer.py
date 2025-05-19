@@ -3,7 +3,7 @@ import threading
 import time
 import unittest
 
-from recognizer import recognize_worker
+from live_caption.recognizer import recognize_worker
 
 
 class DummyRecognizer:

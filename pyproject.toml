@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.scripts]
-live-caption = "main:main"
+live-caption = "live_caption.cli:main"
 
 
 [build-system]

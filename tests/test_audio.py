@@ -4,7 +4,7 @@ import time
 import unittest
 from unittest.mock import patch
 
-from audio import audio_capture_worker, microphone_capture_worker
+from live_caption.audio import audio_capture_worker, microphone_capture_worker
 
 
 class DummyArray(list):
@@ -32,7 +32,7 @@ class AudioCaptureWorkerTest(unittest.TestCase):
         stop = threading.Event()
 
         dummy_sd = type('DummySD', (), {'InputStream': DummyInputStream})
-        with patch('audio.sd', dummy_sd):
+        with patch('live_caption.audio.sd', dummy_sd):
             t = threading.Thread(target=audio_capture_worker, args=(q, stop, 0, 48000, 4))
             t.start()
             time.sleep(0.1)
@@ -52,7 +52,7 @@ class MicrophoneCaptureWorkerTest(unittest.TestCase):
         enable.set()
 
         dummy_sd = type('DummySD', (), {'InputStream': DummyInputStream})
-        with patch('audio.sd', dummy_sd):
+        with patch('live_caption.audio.sd', dummy_sd):
             t = threading.Thread(target=microphone_capture_worker, args=(q, stop, enable, 0, 48000, 4))
             t.start()
             time.sleep(0.1)
@@ -67,7 +67,7 @@ class MicrophoneCaptureWorkerTest(unittest.TestCase):
         enable = threading.Event()
 
         dummy_sd = type('DummySD', (), {'InputStream': DummyInputStream})
-        with patch('audio.sd', dummy_sd):
+        with patch('live_caption.audio.sd', dummy_sd):
             t = threading.Thread(target=microphone_capture_worker, args=(q, stop, enable, 0, 48000, 4))
             t.start()
             time.sleep(0.1)
