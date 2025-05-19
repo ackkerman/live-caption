@@ -56,11 +56,12 @@ poetry run live-caption
 主なオプション:
 
 ```bash
-poetry run live-caption --device 2 --sample-rate 44100 --chunk-size 2048
+poetry run live-caption --device 2 --mic-device 1 --sample-rate 44100 --chunk-size 2048
 ```
 
 - キャプションウィンドウが最前面に表示されます
 - 音声に合わせてリアルタイム字幕が更新されます
+- キーボードの **M** キーでマイクのオン・オフを切り替えられます
 
 
 ## 🛑 終了方法
@@ -71,7 +72,7 @@ poetry run live-caption --device 2 --sample-rate 44100 --chunk-size 2048
 
 ## ⚙️ 今後の拡張予定
 
-- [ ] **デバイスマイクのオン・オフ**
+- [x] **デバイスマイクのオン・オフ**
 - [ ] **キャプションのスタイル変更対応**
 - [x] **キャプションの折り返し・複数行表示**
 - [ ] **Whisper.cppなど他の音声認識エンジンへの切り替え**

@@ -3,8 +3,9 @@ import sys
 import textwrap
 
 class CaptionWindow(QtWidgets.QLabel):
-    def __init__(self):
+    def __init__(self, mic_event=None):
         super().__init__()
+        self.mic_event = mic_event
         self.setWindowFlags(
             QtCore.Qt.WindowStaysOnTopHint |
             QtCore.Qt.FramelessWindowHint |
@@ -85,6 +86,15 @@ class CaptionWindow(QtWidgets.QLabel):
             next_index = (layout_options.index(self.layout_mode) + 1) % len(layout_options)
             self.layout_mode = layout_options[next_index]
             self.update_position()
+
+        elif event.key() == QtCore.Qt.Key_M and self.mic_event is not None:
+            # Mキーでマイクのオン・オフ切り替え
+            if self.mic_event.is_set():
+                print("[INFO] Microphone capture disabled")
+                self.mic_event.clear()
+            else:
+                print("[INFO] Microphone capture enabled")
+                self.mic_event.set()
 
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.LeftButton:
