@@ -43,7 +43,7 @@ https://github.com/user-attachments/assets/5fbaa334-c55b-49f7-b66b-9903ab4a828f
     poetry run python scripts/monitor_device.py
     ```
 
-5. `main.py` 内の `MONITOR_DEVICE_INDEX` を正しい番号に設定するか、
+5. `live_caption/cli.py` 内の `MONITOR_DEVICE_INDEX` を正しい番号に設定するか、
    起動時に `--device` オプションで指定してください
 
 

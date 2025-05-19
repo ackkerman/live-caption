@@ -6,14 +6,14 @@ import argparse
 
 try:
     from PyQt5 import QtWidgets, QtCore
-    from CaptionWindow import CaptionWindow
+    from .CaptionWindow import CaptionWindow
 except Exception:  # pragma: no cover - optional for tests
     QtWidgets = None
     QtCore = None
     CaptionWindow = None
 
-from audio import audio_capture_worker, microphone_capture_worker
-from recognizer import recognize_worker
+from .audio import audio_capture_worker, microphone_capture_worker
+from .recognizer import recognize_worker
 
 # --- 音声キャプチャ設定 ---
 SAMPLE_RATE = 48000

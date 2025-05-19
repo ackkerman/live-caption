@@ -42,7 +42,7 @@ https://github.com/user-attachments/assets/5fbaa334-c55b-49f7-b66b-9903ab4a828f
     poetry run python scripts/monitor_device.py
     ```
 
-4. Set the correct `MONITOR_DEVICE_INDEX` in `main.py`, or specify it when
+4. Set the correct `MONITOR_DEVICE_INDEX` in `live_caption/cli.py`, or specify it when
    launching via `--device`.
 
 
