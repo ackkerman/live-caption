@@ -25,11 +25,14 @@ class SpeechRecognizer:
             if text:
                 self.final_text = text
                 window.update_caption(self.final_text)
+                print(f"[CAPTION] {self.final_text}")
         else:
             partial_result = self.rec.PartialResult()
             partial_text = json.loads(partial_result).get("partial", "")
             if partial_text:
-                window.update_caption(f"{self.final_text} {partial_text}")
+                caption_text = f"{self.final_text} {partial_text}"
+                window.update_caption(caption_text)
+                print(f"[CAPTION] {caption_text}")
 
 
 def recognize_worker(window, q: queue.Queue, stop_event, recognizer=None, lang="en-us", sample_rate=48000):
