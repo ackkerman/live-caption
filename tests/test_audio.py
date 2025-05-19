@@ -4,7 +4,7 @@ import time
 import unittest
 from unittest.mock import patch
 
-from audio import audio_capture_worker
+from audio import audio_capture_worker, microphone_capture_worker
 
 
 class DummyArray(list):
@@ -42,6 +42,39 @@ class AudioCaptureWorkerTest(unittest.TestCase):
         self.assertFalse(q.empty())
         data = q.get_nowait()
         self.assertEqual(data, DummyArray([1, 2, 3, 4]))
+
+
+class MicrophoneCaptureWorkerTest(unittest.TestCase):
+    def test_worker_captures_when_enabled(self):
+        q = queue.Queue()
+        stop = threading.Event()
+        enable = threading.Event()
+        enable.set()
+
+        dummy_sd = type('DummySD', (), {'InputStream': DummyInputStream})
+        with patch('audio.sd', dummy_sd):
+            t = threading.Thread(target=microphone_capture_worker, args=(q, stop, enable, 0, 48000, 4))
+            t.start()
+            time.sleep(0.1)
+            stop.set()
+            t.join()
+
+        self.assertFalse(q.empty())
+
+    def test_worker_ignores_when_disabled(self):
+        q = queue.Queue()
+        stop = threading.Event()
+        enable = threading.Event()
+
+        dummy_sd = type('DummySD', (), {'InputStream': DummyInputStream})
+        with patch('audio.sd', dummy_sd):
+            t = threading.Thread(target=microphone_capture_worker, args=(q, stop, enable, 0, 48000, 4))
+            t.start()
+            time.sleep(0.1)
+            stop.set()
+            t.join()
+
+        self.assertTrue(q.empty())
 
 
 if __name__ == '__main__':

@@ -55,11 +55,12 @@ poetry run live-caption
 Common options:
 
 ```bash
-poetry run live-caption --device 2 --sample-rate 44100 --chunk-size 2048
+poetry run live-caption --device 2 --mic-device 1 --sample-rate 44100 --chunk-size 2048
 ```
 
 - A caption window will appear pinned to the top of your screen.
 - Subtitles will update in real time according to the audio output.
+- Press **M** to toggle microphone capture on or off.
 
 
 ## 🛑 How to Exit
@@ -78,7 +79,7 @@ The tests use simple mocks and do not require audio devices or Vosk models.
 
 ## ⚙️ Planned Future Enhancements
 
-- [ ] **Toggle device microphone**
+- [x] **Toggle device microphone**
 - [ ] **Customizable caption styles** (font, color, size, transparency, etc.)
 - [x] **Text wrapping and multi-line caption support**
 - [ ] **Switchable speech recognition engines (e.g., Whisper.cpp support)**
