@@ -3,6 +3,7 @@ import signal
 import queue
 import threading
 import argparse
+import logging
 
 try:
     from PyQt5 import QtWidgets, QtCore
@@ -14,6 +15,19 @@ except Exception:  # pragma: no cover - optional for tests
 
 from .audio import audio_capture_worker, microphone_capture_worker
 from .recognizer import recognize_worker
+
+logger = logging.getLogger(__name__)
+
+
+def setup_logging():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(message)s",
+        handlers=[
+            logging.FileHandler("live_caption.log"),
+            logging.StreamHandler(),
+        ],
+    )
 
 # --- 音声キャプチャ設定 ---
 SAMPLE_RATE = 48000
@@ -52,6 +66,8 @@ def run_app(device_index=MONITOR_DEVICE_INDEX, sample_rate=SAMPLE_RATE, chunk_si
     """Start the caption application."""
     if QtWidgets is None or QtCore is None or CaptionWindow is None:
         raise ImportError("PyQt5 is required to run the application")
+    setup_logging()
+    logger.info("Starting Live Caption application")
     signal.signal(signal.SIGINT, handle_sigint)
 
     app = QtWidgets.QApplication(sys.argv)

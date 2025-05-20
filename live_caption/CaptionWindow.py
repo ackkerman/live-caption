@@ -1,6 +1,9 @@
 from PyQt5 import QtWidgets, QtCore
 import sys
 import textwrap
+import logging
+
+logger = logging.getLogger(__name__)
 
 class CaptionWindow(QtWidgets.QLabel):
     def __init__(self, mic_event=None):
@@ -125,6 +128,10 @@ class CaptionWindow(QtWidgets.QLabel):
         self.adjustSize()
         self.update_position()
         self.show()
+        if not self.isVisible():
+            error_msg = "Caption window failed to display"
+            logger.error(error_msg)
+            raise RuntimeError(error_msg)
 
         # 無音カウントダウンをリセット
         self.hide_timer.start()
